@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Results from './Results';
 import useBreedList from './useBreedList';
-const ANIMALS = ['bird', 'cat', 'dog', 'rabbit', 'reptile'];
+import Form from './Form'; // Import the Form component
 
 /**
  * Component that renders a search form for pets based on location, animal type, and breed.
@@ -36,66 +36,20 @@ const SearchParams = () => {
 
   return (
     <div className="search-params">
-      <form
+      {/* Use the Form component with appropriate props */}
+      <Form
+        location={location}
+        setLocation={setLocation}
+        animal={animal}
+        setAnimal={setAnimal}
+        breeds={breeds}
+        breed={breed}
+        setBreed={setBreed}
         onSubmit={(e) => {
           e.preventDefault();
           requestPets();
         }}
-      >
-        <label htmlFor="location">
-          Location
-          <input
-            id="location"
-            type="text"
-            value={location}
-            placeholder="Location"
-            onChange={(e) => setLocation(e.target.value)}
-          />
-        </label>
-
-        <label htmlFor="animal">
-          Animal
-          <select
-            id="animal"
-            value={animal}
-            onChange={(e) => {
-              setAnimal(e.target.value);
-              setBreed('');
-            }}
-            onBlur={(e) => {
-              setAnimal(e.target.value);
-              setBreed('');
-            }}
-          >
-            <option value="">Select Animal</option>
-            {ANIMALS.map((animal) => (
-              <option key={animal} value={animal}>
-                {animal}
-              </option>
-            ))}
-          </select>
-        </label>
-
-        <label htmlFor="breed">
-          Breed
-          <select
-            disabled={!breeds.length}
-            id="breed"
-            value={breed}
-            onChange={(e) => setBreed(e.target.value)}
-            onBlur={(e) => setBreed(e.target.value)}
-          >
-            <option value="">Select Breed</option>
-            {breeds.map((breed) => (
-              <option key={breed} value={breed}>
-                {breed}
-              </option>
-            ))}
-          </select>
-        </label>
-
-        <button type="submit">Submit</button>
-      </form>
+      />
       <Results pets={pets} />
     </div>
   );
