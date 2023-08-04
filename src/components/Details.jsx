@@ -1,6 +1,7 @@
-import { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useContext, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
+import AdoptedPetContext from '../utils/adoptedPetContext';
 import ErrorBoundary from './ErrorBoundary';
 import Modal from './Modal';
 import fetchPet from '../utils/fetchPet';
@@ -15,8 +16,19 @@ import Carousel from './Carousel';
  */
 const Details = () => {
   const [showModal, setShowModal] = useState(false);
+  const navigate = useNavigate();
+  // eslint-disable-next-line no-unused-vars
+  const [_, setAdoptedPet] = useContext(AdoptedPetContext);
   const { id } = useParams();
   const { data, isLoading, isError } = useQuery(['details', id], fetchPet);
+
+  /**
+   * Handles the adoption of the pet and navigates back to the home page.
+   */
+  const handleAdopt = () => {
+    setAdoptedPet(data.pets[0]);
+    navigate('/');
+  };
 
   if (isError) {
     return (
@@ -47,17 +59,17 @@ const Details = () => {
         </h2>
         <button onClick={() => setShowModal(true)}>Adopt {name}</button>
         <p>{description}</p>
-        {showModal ? (
+        {showModal && (
           <Modal>
             <div>
               <h1>Would you like to adopt {name}?</h1>
               <div className="buttons">
-                <button>Definitely Yes</button>
+                <button onClick={handleAdopt}>Definitely Yes</button>
                 <button onClick={() => setShowModal(false)}>No</button>
               </div>
             </div>
           </Modal>
-        ) : null}
+        )}
       </div>
     </div>
   );
