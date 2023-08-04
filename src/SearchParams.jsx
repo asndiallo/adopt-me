@@ -3,6 +3,10 @@ import Results from './Results';
 import useBreedList from './useBreedList';
 const ANIMALS = ['bird', 'cat', 'dog', 'rabbit', 'reptile'];
 
+/**
+ * Component that renders a search form for pets based on location, animal type, and breed.
+ * Allows users to search for pets available for adoption based on their preferences.
+ */
 const SearchParams = () => {
   const [pets, setPets] = useState([]);
   const [location, setLocation] = useState('');
@@ -14,6 +18,10 @@ const SearchParams = () => {
     requestPets();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
+  /**
+   * Sends a request to the API with the selected location, animal, and breed,
+   * and updates the 'pets' state variable with the response.
+   */
   async function requestPets() {
     const res = await fetch(
       `http://pets-v2.dev-apis.com/pets?animal=${animal}&location=${location}&breed=${breed}`
