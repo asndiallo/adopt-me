@@ -33,6 +33,7 @@ class ErrorBoundary extends Component {
    * @param {Object} info - Additional information about the error.
    */
   componentDidCatch(error, info) {
+    // Typically, we would log the error to an error reporting service like TrackJS or New Relic.
     console.error('ErrorBoundary caught an error', error, info);
   }
 
