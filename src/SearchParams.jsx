@@ -43,6 +43,7 @@ const SearchParams = () => {
           Location
           <input
             id="location"
+            type="text"
             value={location}
             placeholder="Location"
             onChange={(e) => setLocation(e.target.value)}
@@ -63,7 +64,7 @@ const SearchParams = () => {
               setBreed('');
             }}
           >
-            <option />
+            <option value="">Select Animal</option>
             {ANIMALS.map((animal) => (
               <option key={animal} value={animal}>
                 {animal}
@@ -81,7 +82,7 @@ const SearchParams = () => {
             onChange={(e) => setBreed(e.target.value)}
             onBlur={(e) => setBreed(e.target.value)}
           >
-            <option />
+            <option value="">Select Breed</option>
             {breeds.map((breed) => (
               <option key={breed} value={breed}>
                 {breed}
@@ -90,7 +91,7 @@ const SearchParams = () => {
           </select>
         </label>
 
-        <button>Submit</button>
+        <button type="submit">Submit</button>
       </form>
       <Results pets={pets} />
     </div>
