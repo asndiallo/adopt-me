@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 /**
  * Renders a pet card with information such as name, animal, breed, images, location, and id.
  * Provides a link to the pet details page.
@@ -17,7 +18,7 @@ const Pet = ({ name, animal, breed, images, location, id }) => {
     : 'http://pets-images.dev-apis.com/pets/none.jpg';
 
   return (
-    <a href={`/details/${id}`} className="pet">
+    <Link to={`/details/${id}`} className="pet">
       <div className="image-container">
         <img src={hero} alt={name} />
       </div>
@@ -25,7 +26,7 @@ const Pet = ({ name, animal, breed, images, location, id }) => {
         <h1>{name}</h1>
         <h2>{`${animal} — ${breed} — ${location}`}</h2>
       </div>
-    </a>
+    </Link>
   );
 };
 
