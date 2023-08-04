@@ -7,25 +7,30 @@ import Pet from './Pet';
  * @returns {JSX.Element} - A div with class "search" containing either a message saying "No Pets Found" or a list of 'Pet' components.
  */
 const Results = ({ pets }) => {
+  // Check if the 'pets' array is empty
+  if (pets.length === 0) {
+    // If it is empty, display a message saying "No Pets Found"
+    return (
+      <div className="search">
+        <h1>No Pets Found</h1>
+      </div>
+    );
+  }
+
+  // If it is not empty, map through the 'pets' array and render a 'Pet' component for each pet object in the array
   return (
     <div className="search">
-      {!pets.length ? (
-        <h1>No Pets Found</h1>
-      ) : (
-        pets.map((pet) => {
-          return (
-            <Pet
-              animal={pet.animal}
-              key={pet.id}
-              name={pet.name}
-              breed={pet.breed}
-              images={pet.images}
-              location={`${pet.city}, ${pet.state}`}
-              id={pet.id}
-            />
-          );
-        })
-      )}
+      {pets.map((pet) => (
+        <Pet
+          animal={pet.animal}
+          key={pet.id}
+          name={pet.name}
+          breed={pet.breed}
+          images={pet.images}
+          location={`${pet.city}, ${pet.state}`}
+          id={pet.id}
+        />
+      ))}
     </div>
   );
 };
