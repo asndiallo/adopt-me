@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import fetchPet from '../utils/fetchPet';
+import Carousel from './Carousel';
 
 /**
  * Renders the details of a specific pet based on the ID parameter passed through the URL.
@@ -29,10 +30,12 @@ const Details = () => {
     );
   }
 
-  const { name, animal, breed, description, city, state } = data.pets[0];
+  const { name, animal, breed, description, city, state, images } =
+    data.pets[0];
 
   return (
     <div className="details">
+      <Carousel images={images} />
       <div>
         <h1>{name}</h1>
         <h2>
