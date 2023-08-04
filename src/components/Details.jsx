@@ -1,6 +1,8 @@
+import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import ErrorBoundary from './ErrorBoundary';
+import Modal from './Modal';
 import fetchPet from '../utils/fetchPet';
 import Carousel from './Carousel';
 
@@ -12,6 +14,7 @@ import Carousel from './Carousel';
  * @returns {JSX.Element} The rendered component displaying the pet details or an error message.
  */
 const Details = () => {
+  const [showModal, setShowModal] = useState(false);
   const { id } = useParams();
   const { data, isLoading, isError } = useQuery(['details', id], fetchPet);
 
@@ -42,8 +45,19 @@ const Details = () => {
         <h2>
           {animal} — {breed} -- {city}, {state}
         </h2>
-        <button>Adopt Me</button>
+        <button onClick={() => setShowModal(true)}>Adopt {name}</button>
         <p>{description}</p>
+        {showModal ? (
+          <Modal>
+            <div>
+              <h1>Would you like to adopt {name}?</h1>
+              <div className="buttons">
+                <button>Definitely Yes</button>
+                <button onClick={() => setShowModal(false)}>No</button>
+              </div>
+            </div>
+          </Modal>
+        ) : null}
       </div>
     </div>
   );
