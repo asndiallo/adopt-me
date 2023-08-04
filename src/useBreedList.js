@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import axios from "axios";
 
 const localCache = {};
 
@@ -19,12 +20,18 @@ export default function useBreedList(animal) {
             setStatus("loading");
 
             try {
-                const res = await fetch(`http://pets-v2.dev-apis.com/breeds?animal=${animal}`);
-                const json = await res.json();
-
-                if (isMounted) {
-                    setBreedList(json.breeds || []);
+                if (localCache[animal]) {
+                    setBreedList(localCache[animal]);
                     setStatus("loaded");
+                } else {
+                    const response = await axios.get(`http://pets-v2.dev-apis.com/breeds?animal=${animal}`);
+                    const data = response.data;
+
+                    if (isMounted) {
+                        setBreedList(data.breeds || []);
+                        setStatus("loaded");
+                        localCache[animal] = data.breeds || [];
+                    }
                 }
             } catch (error) {
                 console.error("Error fetching breed list:", error);

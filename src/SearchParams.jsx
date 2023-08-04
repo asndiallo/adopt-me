@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import axios from 'axios';
 import Results from './Results';
 import useBreedList from './useBreedList';
 const ANIMALS = ['bird', 'cat', 'dog', 'rabbit', 'reptile'];
@@ -23,12 +24,14 @@ const SearchParams = () => {
    * and updates the 'pets' state variable with the response.
    */
   async function requestPets() {
-    const res = await fetch(
-      `http://pets-v2.dev-apis.com/pets?animal=${animal}&location=${location}&breed=${breed}`
-    );
-    const json = await res.json();
-
-    setPets(json.pets);
+    try {
+      const response = await axios.get(
+        `http://pets-v2.dev-apis.com/pets?animal=${animal}&location=${location}&breed=${breed}`
+      );
+      setPets(response.data.pets);
+    } catch (error) {
+      console.error('Error fetching pets:', error);
+    }
   }
 
   return (
