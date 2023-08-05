@@ -2,6 +2,16 @@ import React from 'react';
 
 const ANIMALS = ['bird', 'cat', 'dog', 'rabbit', 'reptile'];
 
+/**
+ * A form component for searching pets based on location, animal type, and breed.
+ * @param {Object} props - The component props.
+ * @param {function} props.onSubmit - The function to call when the form is submitted.
+ * @param {string} props.location - The user's location.
+ * @param {string} props.animal - The user's selected animal type.
+ * @param {function} props.onAnimalChange - The function to call when the user selects a new animal type.
+ * @param {string[]} props.breeds - The available breeds for the selected animal type.
+ * @returns {JSX.Element} - The rendered form.
+ */
 const PetSearchForm = ({
   onSubmit,
   location,
@@ -9,6 +19,15 @@ const PetSearchForm = ({
   onAnimalChange,
   breeds,
 }) => {
+  /**
+   * Handles the change event when the user selects a new animal type.
+   * @param {React.ChangeEvent<HTMLSelectElement>} event - The change event.
+   */
+  const handleAnimalChange = (event) => {
+    const selectedAnimal = event.target.value;
+    onAnimalChange(selectedAnimal);
+  };
+
   return (
     <form onSubmit={onSubmit}>
       <label htmlFor="location">
@@ -27,12 +46,8 @@ const PetSearchForm = ({
           id="animal"
           name="animal"
           value={animal}
-          onChange={(e) => {
-            onAnimalChange(e.target.value);
-          }}
-          onBlur={(e) => {
-            onAnimalChange(e.target.value);
-          }}
+          onChange={handleAnimalChange}
+          onBlur={handleAnimalChange}
         >
           <option />
           {ANIMALS.map((animal) => (
@@ -55,7 +70,7 @@ const PetSearchForm = ({
         </select>
       </label>
 
-      <button>Submit</button>
+      <button type="submit">Submit</button>
     </form>
   );
 };
