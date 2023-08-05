@@ -1,13 +1,15 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import Results from './Results';
+import Form from './Form';
 import useBreedList from '../utils/useBreedList';
 import fetchSearch from '../utils/fetchSearch';
-const ANIMALS = ['bird', 'cat', 'dog', 'rabbit', 'reptile'];
 
 /**
  * Renders a search form for pets based on location, animal type, and breed.
  * Also displays the search results using the 'Results' component.
+ *
+ * @returns {JSX.Element} The rendered search form and search results.
  */
 const SearchParams = () => {
   // Initialize state variables
@@ -16,10 +18,11 @@ const SearchParams = () => {
     animal: '',
     breed: '',
   });
+
   const [animal, setAnimal] = useState('');
   const [breeds] = useBreedList(animal);
 
-  // Fetch search results based on request parameters
+  // Retrieve data from the API based on the search form parameters
   const { data } = useQuery(['search', requestParams], fetchSearch);
   const pets = data?.pets ?? [];
 
@@ -35,51 +38,17 @@ const SearchParams = () => {
     setRequestParams(obj);
   };
 
-  // TODO: Add a loading indicator
-  // TODO: Use the form component
   return (
     <div className="search-params">
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="location">
-          Location
-          <input id="location" name="location" placeholder="Location" />
-        </label>
-
-        <label htmlFor="animal">
-          Animal
-          <select
-            id="animal"
-            name="animal"
-            onChange={(e) => {
-              setAnimal(e.target.value);
-            }}
-            onBlur={(e) => {
-              setAnimal(e.target.value);
-            }}
-          >
-            <option />
-            {ANIMALS.map((animal) => (
-              <option key={animal} value={animal}>
-                {animal}
-              </option>
-            ))}
-          </select>
-        </label>
-
-        <label htmlFor="breed">
-          Breed
-          <select disabled={!breeds.length} id="breed" name="breed">
-            <option />
-            {breeds.map((breed) => (
-              <option key={breed} value={breed}>
-                {breed}
-              </option>
-            ))}
-          </select>
-        </label>
-
-        <button>Submit</button>
-      </form>
+      {/* Render the search form */}
+      <Form
+        onSubmit={handleSubmit}
+        location={requestParams.location}
+        animal={animal}
+        onAnimalChange={setAnimal}
+        breeds={breeds}
+      />
+      {/* Render the search results */}
       <Results pets={pets} />
     </div>
   );
