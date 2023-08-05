@@ -11,7 +11,7 @@ const fetchPet = async ({ queryKey }) => {
 
   try {
     const response = await axios.get(
-      `http://pets-v2.dev-apis.com/pets?id=${id}`
+      `http://pets-v2.dev-apis.com/pets?id=${id}`,
     );
     return response.data;
   } catch (error) {
