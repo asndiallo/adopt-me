@@ -7,6 +7,6 @@ import fetchBreedList from './fetchBreedList';
  * @returns {Array} - An array containing the breed list and the status of the data fetching process.
  */
 export default function useBreedList(animal) {
-    const { data, status } = useQuery(['breeds', animal], fetchBreedList);
-    return [data?.breeds ?? [], status];
+  const { data, status } = useQuery(['breeds', animal], fetchBreedList);
+  return [data?.breeds ?? [], status];
 }
