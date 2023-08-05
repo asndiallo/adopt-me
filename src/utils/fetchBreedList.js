@@ -15,7 +15,7 @@ const fetchBreedList = async ({ queryKey }) => {
 
   try {
     const response = await axios.get(
-      `http://pets-v2.dev-apis.com/breeds?animal=${animal}`
+      `http://pets-v2.dev-apis.com/breeds?animal=${animal}`,
     );
     return response.data;
   } catch (error) {

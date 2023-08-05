@@ -20,7 +20,7 @@ async function fetchSearch({ queryKey }) {
     return response.data;
   } catch (error) {
     throw new Error(
-      `Pet search for ${breed} ${animal} -- ${location} failed: ${error.message}`
+      `Pet search for ${breed} ${animal} -- ${location} failed: ${error.message}`,
     );
   }
 }
