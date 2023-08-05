@@ -1,55 +1,85 @@
-import { useEffect, useState } from 'react';
-import axios from 'axios';
+import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import Results from './Results';
 import useBreedList from '../utils/useBreedList';
-import Form from './Form'; // Import the Form component
+import fetchSearch from '../utils/fetchSearch';
+const ANIMALS = ['bird', 'cat', 'dog', 'rabbit', 'reptile'];
 
 /**
- * Component that renders a search form for pets based on location, animal type, and breed.
- * Allows users to search for pets available for adoption based on their preferences.
+ * Renders a search form for pets based on location, animal type, and breed.
+ * Also displays the search results using the 'Results' component.
  */
 const SearchParams = () => {
-  const [pets, setPets] = useState([]);
-  const [location, setLocation] = useState('');
+  // Initialize state variables
+  const [requestParams, setRequestParams] = useState({
+    location: '',
+    animal: '',
+    breed: '',
+  });
   const [animal, setAnimal] = useState('');
-  const [breed, setBreed] = useState('');
   const [breeds] = useBreedList(animal);
 
-  useEffect(() => {
-    requestPets();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  // Fetch search results based on request parameters
+  const { data } = useQuery(['search', requestParams], fetchSearch);
+  const pets = data?.pets ?? [];
 
-  /**
-   * Sends a request to the API with the selected location, animal, and breed,
-   * and updates the 'pets' state variable with the response.
-   */
-  async function requestPets() {
-    try {
-      const response = await axios.get(
-        `http://pets-v2.dev-apis.com/pets?animal=${animal}&location=${location}&breed=${breed}`
-      );
-      setPets(response.data.pets);
-    } catch (error) {
-      console.error('Error fetching pets:', error);
-    }
-  }
+  // Handle form submission
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const obj = {
+      animal: formData.get('animal') ?? '',
+      breed: formData.get('breed') ?? '',
+      location: formData.get('location') ?? '',
+    };
+    setRequestParams(obj);
+  };
 
+  // TODO: Add a loading indicator
+  // TODO: Use the form component
   return (
     <div className="search-params">
-      {/* Use the Form component with appropriate props */}
-      <Form
-        location={location}
-        setLocation={setLocation}
-        animal={animal}
-        setAnimal={setAnimal}
-        breeds={breeds}
-        breed={breed}
-        setBreed={setBreed}
-        onSubmit={(e) => {
-          e.preventDefault();
-          requestPets();
-        }}
-      />
+      <form onSubmit={handleSubmit}>
+        <label htmlFor="location">
+          Location
+          <input id="location" name="location" placeholder="Location" />
+        </label>
+
+        <label htmlFor="animal">
+          Animal
+          <select
+            id="animal"
+            name="animal"
+            onChange={(e) => {
+              setAnimal(e.target.value);
+            }}
+            onBlur={(e) => {
+              setAnimal(e.target.value);
+            }}
+          >
+            <option />
+            {ANIMALS.map((animal) => (
+              <option key={animal} value={animal}>
+                {animal}
+              </option>
+            ))}
+          </select>
+        </label>
+
+        <label htmlFor="breed">
+          Breed
+          <select disabled={!breeds.length} id="breed" name="breed">
+            <option />
+            {breeds.map((breed) => (
+              <option key={breed} value={breed}>
+                {breed}
+              </option>
+            ))}
+          </select>
+        </label>
+
+        <button>Submit</button>
+      </form>
       <Results pets={pets} />
     </div>
   );
