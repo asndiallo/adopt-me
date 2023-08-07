@@ -14,7 +14,7 @@
   "author": "Assane Diallo",
   "license": "ISC",
   "devDependencies": {
-    "@vitejs/plugin-react": "2.2.0",
+    "@vitejs/plugin-react": "4.0.4",
     "eslint": "8.24.0",
     "eslint-config-prettier": "8.5.0",
     "eslint-plugin-import": "2.28.0",
@@ -22,7 +22,7 @@
     "eslint-plugin-react": "7.31.8",
     "eslint-plugin-react-hooks": "4.6.0",
     "prettier": "3.0.1",
-    "vite": "3.2.7"
+    "vite": "4.4.9"
   },
   "dependencies": {
     "@tanstack/react-query": "^4.32.6",
